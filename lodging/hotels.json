@@ -1,0 +1,49 @@
+# Tucson
+# New York
+# Las Vegas
+# Los Angeles
+# Houston
+# Denver
+# Miami
+# Atlanta
+# Philadelphia
+# Seattle
+
+[
+    {
+        "name": "The Venetian",
+        "city": "Las Vegas",
+        "state": "Nevada",
+        "cost": 100,
+        "booked": "True"
+    },
+    {
+        "name": "The Bellagio",
+        "city": "Las Vegas",
+        "state": "Nevada",
+        "cost": 150,
+        "booked": "False"
+    },
+    {
+        "name": "The Wynn",
+        "city": "Las Vegas",
+        "state": "Nevada",
+        "cost": 200,
+        "booked": "False"
+    },
+    {
+        "name": "The Encore",
+        "city": "Las Vegas",
+        "state": "Nevada",
+        "cost": 300,
+        "booked": "False"
+    },
+    {
+        "name": "The Wynn",
+        "city": "Las Vegas",
+        "state": "Nevada",
+        "cost": 200,
+        "booked": "False"
+    }
+
+]
