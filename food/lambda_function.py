@@ -22,67 +22,73 @@ cost_values = {
 }
 
 def lambda_handler(event, context):
-    # print(event)
-    logger.info("Event: {}".format(event))
-
     # Extract city and state from event
-    city, state = extract_details(event)
+    body = event["body"] # bG9jYXRpb25zPWNpdHkmbG9jYXRpb25zPXN0YXRlJmJ1ZGdldD05JnZhY2F0aW9uX3RpbWVzPXN0YXJ0X2RhdGUmdmFjYXRpb25fdGltZXM9ZW5kX2RhdGU=
+    cities, states = extract_details(body)
+    returned_body = {}
 
-    # Sample Params
-    params = {
-        "location": city,
-        "term": "restaurants",
-        "limit": 5
-    }
+    # Loop through each provided city
+    for i in range(len(cities)):
+        city = cities[i].lower().replace(',', '')
+        state = states[i].lower()
 
-    requestHeaders = {
-        "Content-type": "application/json",
-        "Authorization": "Bearer " + API_KEY # Required for Auth
-    }
+        # Sample Params
+        params = {
+            "location": city,
+            "term": "restaurants",
+            "limit": 5
+        }
 
-    response = requests.get(API_ENDPOINT, 
-        params=params, 
-        headers=requestHeaders
-    )
+        requestHeaders = {
+            "Content-type": "application/json",
+            "Authorization": "Bearer " + API_KEY # Required for Auth
+        }
 
-    # Extract data to return to Alexa
-    response_json = json.loads(response.text)
-    places = extract_places(response_json)
-    average_cost = float(calculate_average_cost(places))
-    text = "Average cost for food in {}, {} is ${}, I recommend checking out {} that has {} stars!".format(city, state, average_cost, places[0]["name"], places[0]["rating"])
+        response = requests.get(API_ENDPOINT, 
+            params=params, 
+            headers=requestHeaders
+        )
 
-    returned_body = {
-        "places": places,
-        "average_cost": average_cost,
-        "text": text
-    }
+        # Extract data to return to Alexa
+        response_json = json.loads(response.text)
+        places = extract_places(response_json)
+        average_cost = float(calculate_average_cost(places))
+        text = "Average cost for food in {}, {} is ${}, I recommend checking out {} that has {} stars!".format(city, state, average_cost, places[0]["name"], places[0]["rating"])
+
+        city_return_body = {
+            "places": places,
+            "average_cost": average_cost,
+            "text": text
+        }
+
+        # Add new data
+        if city not in returned_body:
+            returned_body[city] = city_return_body
 
     return {
         "statusCode": 200,
         "body": json.dumps(returned_body)
     }
 
-def extract_details(event):
+def extract_details(body):
     """
-    TODO: Implement
+    Takes body from JSON recieved from Alexa and parses attributes
     """
-    city, state = "Tucson", "Arizona"
-
     # Decode event string
-    base64_bytes = event["body"].encode('ascii')
+    base64_bytes = body.encode('ascii')
     message_bytes = base64.b64decode(base64_bytes)
     message = message_bytes.decode('ascii')
 
-    logger.info("Body: {}".format(message))
-    # print("Message: {}".format(message))
+    # NOTE: here, message = states=Arizona&cities=tucson%2C&budget=5&freetimes=5-June%3A9-June
 
     # Parse
-    t = urlparse.urlparse("https://foo.com?" + message)
-    # print(t)
-    # print(parse_qs(t.query)['city']) # Extract city
+    params = urlparse.urlparse("https://foo.com?" + message)
 
-
-    return city, state
+    # Extract city and state from params
+    cities = parse_qs(params.query)['cities']
+    states = parse_qs(params.query)['states']
+    # free_times = parse_qs(params.query)['freetimes']
+    return cities, states
 
 def extract_places(response_json):
     """
@@ -118,8 +124,3 @@ def calculate_average_cost(places):
     for place in places:
         cost += int(place["cost"])
     return cost/len(places)
-
-if __name__ == "__main__":
-    with open("t.json", "r") as f:
-        data = json.load(f)
-        lambda_handler(data, None)
