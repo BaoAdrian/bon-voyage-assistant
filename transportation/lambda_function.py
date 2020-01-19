@@ -3,25 +3,38 @@ Transportation API Lambda Function
 """
 
 import json
+import urllib.parse as urlparse
+from urllib.parse import parse_qs
+import base64
 
 CLIENT_ID = ""
 API_KEY = ""
 API_ENDPOINT = ""
 
-def lambda_handler(json_data, context):
-    city, state = "Tucson", "Arizona"
-    city_trans = json_data["Tucson"]
-    trans_dict = extract_options(city_trans)
-    most_available = most_available_transport(trans_dict)
-    text = "One of the most available modes of transport in {}, {} is by {}, with an average cost of {} dollars!".format(city, state, most_available[0], most_available[1])
+def lambda_handler(event, context):
+    with open("transportation/transport.json", "r") as f:
+        json_data = json.load(f)
 
-    print(text)
+    # Extract city and state from event
+    body = event["body"] # bG9jYXRpb25zPWNpdHkmbG9jYXRpb25zPXN0YXRlJmJ1ZGdldD05JnZhY2F0aW9uX3RpbWVzPXN0YXJ0X2RhdGUmdmFjYXRpb25fdGltZXM9ZW5kX2RhdGU=
+    cities, states = extract_details(body)
+    returned_body = {}
 
-    returned_body = {
-        "transportation": city_trans,
-        "most_available": most_available[1],
-        "text": text
-    }
+    # Loop through each provided city
+    for i in range(len(cities)):
+        city = cities[i].lower().replace(',', '')
+        state = states[i].lower()
+
+        city_trans = json_data[city]
+        trans_dict = extract_options(city_trans)
+        most_available = most_available_transport(trans_dict)
+        text = "One of the most available modes of transport in {}, {} is by {}, with an average cost of {} dollars!".format(city, state, most_available[0], most_available[1])
+
+        returned_body = {
+            "transportation": city_trans,
+            "most_available": most_available[1],
+            "text": text
+        }
 
     return {
         "statusCode": 200,
@@ -38,6 +51,26 @@ def most_available_transport(trans_dict):
             method = t["name"]
 
     return (method, most)
+
+def extract_details(body):
+    """
+    Takes body from JSON recieved from Alexa and parses attributes
+    """
+    # Decode event string
+    base64_bytes = body.encode('ascii')
+    message_bytes = base64.b64decode(base64_bytes)
+    message = message_bytes.decode('ascii')
+
+    # NOTE: here, message = states=Arizona&cities=tucson%2C&budget=5&freetimes=5-June%3A9-June
+
+    # Parse
+    params = urlparse.urlparse("https://foo.com?" + message)
+
+    # Extract city and state from params
+    cities = parse_qs(params.query)['cities']
+    states = parse_qs(params.query)['states']
+    # free_times = parse_qs(params.query)['freetimes']
+    return cities, states
 
 def extract_options(city):
     """
@@ -58,8 +91,3 @@ def extract_options(city):
             }
         )
     return transportation
-
-if __name__ == "__main__":
-    with open("transportation/transport.json", "r") as f:
-        data = json.load(f)
-        lambda_handler(data, None)
