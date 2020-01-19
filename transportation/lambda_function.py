@@ -7,12 +7,8 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import base64
 
-CLIENT_ID = ""
-API_KEY = ""
-API_ENDPOINT = ""
-
 def lambda_handler(event, context):
-    with open("transportation/transport.json", "r") as f:
+    with open("transport.json", "r") as f:
         json_data = json.load(f)
 
     # Extract city and state from event

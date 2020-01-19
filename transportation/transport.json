@@ -1,6 +1,6 @@
 
 {
-    "Tucson" : [
+    "tucson" : [
         {
             "name": "bus",
             "cost": 10,
@@ -32,7 +32,7 @@
             "availability": 4
         }
     ],
-    "New York" : [
+    "new york city" : [
         {
             "name": "bus",
             "cost": 20,
@@ -64,7 +64,7 @@
             "availability": 3
         }
     ],
-    "Las Vegas" : [
+    "las vegas" : [
         {
             "name": "bus",
             "cost": 20,
@@ -96,7 +96,7 @@
             "availability": 4
         }
     ],
-    "Los Angeles" : [
+    "los angeles" : [
         {
             "name": "bus",
             "cost": 20,
@@ -128,7 +128,7 @@
             "availability": 4
         }
     ],
-    "Austin" : [
+    "austin" : [
         {
             "name": "bus",
             "cost": 15,
@@ -160,7 +160,7 @@
             "availability": 4
         }
     ],
-    "Denver" : [
+    "denver" : [
         {
             "name": "bus",
             "cost": 10,
@@ -192,7 +192,7 @@
             "availability": 4
         }
     ],
-    "Miami" : [
+    "miami" : [
         {
             "name": "bus",
             "cost": 40,
@@ -224,7 +224,7 @@
             "availability": 4
         }
     ],
-    "Atlanta" : [
+    "atlanta" : [
         {
             "name": "bus",
             "cost": 15,
@@ -256,7 +256,7 @@
             "availability": 4
         }
     ],
-    "Chicago" : [
+    "chicago" : [
         {
             "name": "bus",
             "cost": 15,
@@ -288,7 +288,7 @@
             "availability": 3
         }
     ],
-    "Seattle" : [
+    "seattle" : [
         {
             "name": "bus",
             "cost": 50,
