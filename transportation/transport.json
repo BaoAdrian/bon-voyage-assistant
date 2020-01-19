@@ -1,0 +1,324 @@
+
+{
+    "Tucson" : [
+        {
+            "name": "bus",
+            "cost": 10,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 30,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 150,
+            "availability": 4
+        }
+    ],
+    "New York" : [
+        {
+            "name": "bus",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 30,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 25,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 10,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 250,
+            "availability": 4
+        }
+    ],
+    "Las Vegas" : [
+        {
+            "name": "bus",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 15,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 40,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 100,
+            "availability": 4
+        }
+    ],
+    "Los Angeles" : [
+        {
+            "name": "bus",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 30,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 20,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 20,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 200,
+            "availability": 4
+        }
+    ],
+    "Austin" : [
+        {
+            "name": "bus",
+            "cost": 15,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 30,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 20,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 20,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 250,
+            "availability": 4
+        }
+    ],
+    "Denver" : [
+        {
+            "name": "bus",
+            "cost": 10,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 30,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 150,
+            "availability": 4
+        }
+    ],
+    "Miami" : [
+        {
+            "name": "bus",
+            "cost": 40,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 35,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 25,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 150,
+            "availability": 4
+        }
+    ],
+    "Atlanta" : [
+        {
+            "name": "bus",
+            "cost": 15,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 20,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 200,
+            "availability": 4
+        }
+    ],
+    "Philadelphia" : [
+        {
+            "name": "bus",
+            "cost": 15,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 20,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 35,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 15,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 125,
+            "availability": 4
+        }
+    ],
+    "Seattle" : [
+        {
+            "name": "bus",
+            "cost": 50,
+            "availability": 5
+        },
+        {
+            "name": "taxi",
+            "cost": 40,
+            "availability": 5
+        },
+        {
+            "name": "train",
+            "cost": 50,
+            "availability": 3
+        },
+        {
+            "name": "railcar",
+            "cost": 25,
+            "availability": 2
+        },
+        {
+            "name": "bike",
+            "cost": 0,
+            "availability": 5
+        },
+        {
+            "name": "rental-car",
+            "cost": 350,
+            "availability": 4
+        }
+    ]
+}
+
