@@ -5,18 +5,28 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import base64
 from datetime import datetime
+import logging
+
+logger = logging.getLogger()
 
 LIMIT = 10
 
 def lambda_handler(event, context):
     API_ENDPOINT = "https://flight-manager-api.herokuapp.com"
-    PARAM = "/flights"
+    PARAM = "/flights?date="
 
     body = event["body"]
+
+    print("Body: {}".format(body))
+    logger.info("Body: {}".format(body))
 
     date_str = extract_details(body)
     PARAM += date_str
     API_ENDPOINT += PARAM
+    
+    print(API_ENDPOINT)
+    print(date_str)
+    logger.info(API_ENDPOINT)
 
     flight_api_response = requests.get(API_ENDPOINT)
     api_json = json.loads(flight_api_response.text)
@@ -24,7 +34,7 @@ def lambda_handler(event, context):
 
     # Extract requested destination (cities, states) from body
     origin_city, origin_state = "Los Angeles", "California"
-    dest_cities, dest_states = extract_origin(body)
+    dest_cities, dest_states = extract_destinations(body)
 
     returned_body = {}
 
@@ -54,7 +64,7 @@ def lambda_handler(event, context):
         "body": json.dumps(returned_body)
     }
 
-def extract_origin(body):
+def extract_destinations(body):
     """
     Takes body from JSON recieved from Alexa and parses attributes
     """
@@ -90,15 +100,21 @@ def extract_details(body):
 
     # Extract city and state from params
     freetimes = parse_qs(params.query)['freetimes']
-    freetimes.split(':')
+    split_times = freetimes[0].split(':')
 
-    start_date = freetimes[0]
+    start_date = split_times[0]
     date_params = start_date.split('-')
     year = "2020"
-    day = date_params[0]
+    day = int(date_params[0])
+    
+    if day < 10:
+        day_string = "0"+str(day)
+    else:
+        day_string = str(day)
+
     month = extract_month(date_params[1])
 
-    date_str = "{}-{}-{}".format(year, month, day)
+    date_str = "{}-{}-{}".format(year, month, day_string)
     return date_str
 
 def extract_month(string_month):
@@ -141,5 +157,3 @@ def calculate_average_cost(filtered_res):
     for flight in filtered_res:
         cost += int(flight["cost"])
     return cost/len(filtered_res)
-
-lambda_handler(None, None)
