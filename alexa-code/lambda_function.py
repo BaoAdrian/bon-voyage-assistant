@@ -244,7 +244,7 @@ class CheckTripsIntentHandler(AbstractRequestHandler):
         for i in range(len(attributes_manager.session_attributes["cities"])):
             total_cost = flight_costs[i] + transport_costs[i] + hotel_costs[i] + food_costs[i]
             city = attributes_manager.session_attributes["cities"][i]
-            if attributes_manager.session_attributes["cities"] < budget:
+            if total_cost < int(attributes_manager.session_attributes["budget"]):
                 speak_output += " I found a trip to {city} in your budget. The total cost is {total_cost}.".format(city=city, total_cost=total_cost) + hotel_texts[i] + " " + food_texts[i] + " " + transport_texts[i]
             else:
                 speak_output += "I could not find any trips within your budget."
