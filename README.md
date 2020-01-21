@@ -1,5 +1,5 @@
 # Bon Voyage Assistant
-This Alexa Skill-based application was developed as our HackArizona 6.0 (2020) submission and acheived 2nd place for the [`American Airlines Challenge`](https://github.com/AmericanAirlines/Flight-Engine/wiki/Hack-Arizona-2020) with the following details:
+This Alexa Skill-based application was developed as our **HackArizona 6.0 (2020)** submission and **achieved 2nd place** for the [`American Airlines Challenge`](https://github.com/AmericanAirlines/Flight-Engine/wiki/Hack-Arizona-2020) with the following details:
 ```
 Thousands of people fly American each and every day. This awesome responsibility opens the door to incredible opportunities. Help us elevate the customer travel experience, boost operational efficiency and employee performance (baggage handling, gate agents, etc.), or enhance American's brand image with your innovative hacks!
 ```
