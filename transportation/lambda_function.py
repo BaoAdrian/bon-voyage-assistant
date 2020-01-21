@@ -1,19 +1,42 @@
 """
-Transportation API Lambda Function
-"""
+Backend Lambda Function - Transportation Data
 
+Lambda Function script to handle MOCK API Requests
+to some Transportation API.
+
+Currently uses a Data Store (transport.json) to request 
+accurate, researched, data on various public modes of 
+transporation in sample destinations.
+
+@author Adrian Bao
+@author Trey Bryant
+"""
 import json
+import logging
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import base64
 
+logger = logging.getLogger()
+
 def lambda_handler(event, context):
+    """
+    Handler function executed upon Lambda Function triggering.
+
+    @param event Event data given from Lambda Event (JSON)
+    @param context LambdaContext object
+    @return HTTP Response after processing API Request
+    """
     with open("transport.json", "r") as f:
         json_data = json.load(f)
 
     # Extract city and state from event
-    body = event["body"] # bG9jYXRpb25zPWNpdHkmbG9jYXRpb25zPXN0YXRlJmJ1ZGdldD05JnZhY2F0aW9uX3RpbWVzPXN0YXJ0X2RhdGUmdmFjYXRpb25fdGltZXM9ZW5kX2RhdGU=
+    body = event["body"] 
     cities, states = extract_details(body)
+    logger.info("Body: {}".format(body))
+    logger.info("Destination cities: {}".format(cities))
+    logger.info("Destination states: {}".format(states))
+    
     returned_body = {}
 
     # Loop through each provided city
@@ -26,19 +49,30 @@ def lambda_handler(event, context):
         most_available = most_available_transport(trans_dict)
         text = "One of the most available modes of transport in {}, {} is by {}, with an average cost of {} dollars!".format(city, state, most_available[0], most_available[1])
 
-        returned_body = {
+        curr_body = {
             "transportation": city_trans,
             "most_available": most_available[1],
             "text": text
         }
+        
+        if city not in returned_body:
+            returned_body[city] = curr_body
+
+    logger.info("Response: {}".format(returned_body))
 
     return {
         "statusCode": 200,
         "body": json.dumps(returned_body)
     }
 
-# returns the most available transportation; the name of the method of transport, followed by average cost
 def most_available_transport(trans_dict):
+    """
+    Returns the most available transportation gathered
+    from the transportation data provided.
+    
+    @param trans_dict Transportation Data provided 
+    @return the most available mode of public transportation
+    """
     most = trans_dict[0]["availability"]
     method = trans_dict[0]["name"]
     for t in trans_dict:
