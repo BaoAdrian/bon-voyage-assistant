@@ -20,9 +20,9 @@ And was judged using the following criteria:
    - [`Github`](https://github.com/tr3ylbry)
    - LinkedIn
 - Victora Metzler
-   - Github
+   - [`Github`](https://github.com/victoriametzler)
    - [`LinkedIn`](https://www.linkedin.com/in/victoria-metzler/)
-- Jack Mittelmeir
+- Jack Mittelmeier
    - [`Github`](https://github.com/jack-mitt)
    - [`LinkedIn`](https://www.linkedin.com/in/jack-mittelmeier-24068b178/)
 
@@ -42,7 +42,7 @@ This project leverages the following tools and technologies to achieve its funct
    - [`DynamoDB`](https://aws.amazon.com/dynamodb/) (Optional/Prospective)
 - APIs
    - American Airlines [`Flight-Engine`](https://github.com/AmericanAirlines/Flight-Engine/) (Deployed using Heroku)
-   - [`Yelp Fusio API`](https://www.yelp.com/fusion)
+   - [`Yelp Fusion API`](https://www.yelp.com/fusion)
    - Mock Data Stores for Lodging and Transportation
       - Prospective APIs such as Google Hotel API & Google Transit API will be incorporated in the future.
 
