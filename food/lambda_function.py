@@ -1,5 +1,11 @@
 """
-Yelp API Lambda Function
+Backend Lambda Function - Yelp API
+
+Lambda Function script to handle API Requests
+to Yelp API.
+
+@author Adrian Bao
+@author Trey Bryant
 """
 import json
 import urllib.parse as urlparse
@@ -10,8 +16,7 @@ import base64
 
 logger = logging.getLogger()
 
-CLIENT_ID = "zncWZ_dgf8To2adNhAF4nw"
-API_KEY = "4B0KBKAjf7_iXHZOV4XToA4tRBH72q-IinOncFSvEEc0_phmYVssCUYodQPoJXwkCo6TwFx4G4z-o4oTDII3wgsYFU_aikS5BlTbqRHICn4pAG5JF0HSs8vVplwjXnYx"
+API_KEY = "XXXXXXXXXXX"
 API_ENDPOINT = "https://api.yelp.com/v3/businesses/search"
 
 cost_values = {
@@ -22,12 +27,22 @@ cost_values = {
 }
 
 def lambda_handler(event, context):
-    # Extract city and state from event
-    body = event["body"] # bG9jYXRpb25zPWNpdHkmbG9jYXRpb25zPXN0YXRlJmJ1ZGdldD05JnZhY2F0aW9uX3RpbWVzPXN0YXJ0X2RhdGUmdmFjYXRpb25fdGltZXM9ZW5kX2RhdGU=
-    cities, states = extract_details(body)
-    returned_body = {}
+    """
+    Handler function executed upon Lambda Function triggering.
 
+    @param event Event data given from Lambda Event (JSON)
+    @param context LambdaContext object
+    @return HTTP Response after processing API Request
+    """
+    # Extract city and state from event
+    body = event["body"]
+    cities, states = extract_details(body)
+    logger.info("Body: {}".format(body))
+    logger.info("Destination Cities: {}".format(cities))
+    logger.info("Destination States: {}".format(states))
+    
     # Loop through each provided city
+    returned_body = {}
     for i in range(len(cities)):
         city = cities[i].lower().replace(',', '')
         state = states[i].lower()
@@ -53,6 +68,8 @@ def lambda_handler(event, context):
         response_json = json.loads(response.text)
         places = extract_places(response_json)
         average_cost = float(calculate_average_cost(places))
+
+        # Alexa response
         text = "Average cost for food in {}, {} is ${}, I recommend checking out {} that has {} stars!".format(city, state, average_cost, places[0]["name"], places[0]["rating"])
 
         city_return_body = {
@@ -65,6 +82,8 @@ def lambda_handler(event, context):
         if city not in returned_body:
             returned_body[city] = city_return_body
 
+    logger.info("Response: {}".format(returned_body))
+
     return {
         "statusCode": 200,
         "body": json.dumps(returned_body)
@@ -73,6 +92,9 @@ def lambda_handler(event, context):
 def extract_details(body):
     """
     Takes body from JSON recieved from Alexa and parses attributes
+
+    @param body Body from Alexa-triggered Lambda
+    @return parsed destination cities/states for Yelp API Request
     """
     # Decode event string
     base64_bytes = body.encode('ascii')
