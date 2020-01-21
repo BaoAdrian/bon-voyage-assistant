@@ -1,3 +1,12 @@
+"""
+Backend Lambda Function - Flight Engine
+
+Lambda Function script to handle API Requests
+to American Airlines Flight-Engine API.
+
+@author Adrian Bao
+@author Trey Bryant
+"""
 import json
 import requests
 import math
@@ -12,32 +21,36 @@ logger = logging.getLogger()
 LIMIT = 10
 
 def lambda_handler(event, context):
+    """
+    Handler function executed upon Lambda Function triggering.
+
+    @param event Event data given from Lambda Event (JSON)
+    @param context LambdaContext object
+    @return HTTP Response after processing API Request
+    """
     API_ENDPOINT = "https://flight-manager-api.herokuapp.com"
     PARAM = "/flights?date="
 
+    # Extract body
     body = event["body"]
-
-    print("Body: {}".format(body))
     logger.info("Body: {}".format(body))
-
+    
+    # Gather requested date from event body and update API Request URL
     date_str = extract_details(body)
     PARAM += date_str
     API_ENDPOINT += PARAM
-    
-    print(API_ENDPOINT)
-    print(date_str)
-    logger.info(API_ENDPOINT)
+    logger.info("API Endpoint: {}".format(API_ENDPOINT))
 
+    # Perform GET request to Flight-Engine API
     flight_api_response = requests.get(API_ENDPOINT)
     api_json = json.loads(flight_api_response.text)
     
-
     # Extract requested destination (cities, states) from body
-    origin_city, origin_state = "Los Angeles", "California"
+    origin_city, origin_state = "Los Angeles", "California" # Current origin
     dest_cities, dest_states = extract_destinations(body)
 
+    # For each destination, extract API data to return
     returned_body = {}
-
     for i in range(len(dest_cities)):
         dest_city = dest_cities[i]
         dest_state = dest_states[i]
@@ -66,7 +79,11 @@ def lambda_handler(event, context):
 
 def extract_destinations(body):
     """
-    Takes body from JSON recieved from Alexa and parses attributes
+    Takes body from JSON recieved from Alexa and parses destination
+    details from the Flight-Engine GET request.
+
+    @param body Response body from the Flight-Engine GET request
+    @return Lists of destination cities/states
     """
     # Decode event string
     base64_bytes = body.encode('ascii')
@@ -75,7 +92,6 @@ def extract_destinations(body):
 
     # NOTE: here, message = states=Arizona&cities=tucson%2C&budget=5&freetimes=5-June%3A9-June
 
-    # Parse
     params = urlparse.urlparse("https://foo.com?" + message)
 
     # Extract city and state from params
@@ -86,7 +102,8 @@ def extract_destinations(body):
 
 def extract_details(body):
     """
-    Takes body from JSON recieved from Alexa and parses attributes
+    Takes body from JSON recieved from Alexa and parses date
+    needed for the Flight-Engine GET request.
     """
     # Decode event string
     base64_bytes = body.encode('ascii')
@@ -118,6 +135,13 @@ def extract_details(body):
     return date_str
 
 def extract_month(string_month):
+    """
+    Converts the month give from Alexa Lambda Function
+    from the string format ("May") to integer format ("5")
+
+    @param string_month String formatted month (e.g: "May")
+    @return integer formatted month (e.g: "5")
+    """
     month = string_month.lower()
     if month == "january":
         return "01"
@@ -145,6 +169,15 @@ def extract_month(string_month):
         return "12"
 
 def filter_by_destination(res_json, city, state):
+    """
+    Filters the returned data by the provided destination
+    city
+    
+    @param res_json JSON data from Flight-Engine response
+    @param city provided destination city
+    @param state provided destination state
+    @return filtered JSON data containing only destination data
+    """
     # Save filtered results
     filter_res = []
     for res in res_json:
@@ -153,6 +186,13 @@ def filter_by_destination(res_json, city, state):
     return filter_res
 
 def calculate_average_cost(filtered_res):
+    """
+    Calculates the average cost of the supplied filtered
+    results from the Flight-Engine response
+
+    @param filtered_res JSON data filtered from API response
+    @return average flight cost from the provided filtered data
+    """
     cost = 0
     for flight in filtered_res:
         cost += int(flight["cost"])
