@@ -1,26 +1,37 @@
 """
-Lodging API Lambda Function
-"""
+Backend Lambda Function - Lodging Data
 
+Lambda Function script to handle MOCK API Requests
+to some Lodging API.
+
+Currently uses a Data Store (hotels.json) to request 
+accurate, researched, data on various hotels in sample
+destinations.
+
+@author Adrian Bao
+@author Trey Bryant
+"""
 import json
+import logging
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import base64
 
-CLIENT_ID = ""
-API_KEY = ""
-API_ENDPOINT = ""
+logger = logging.getLogger()
 
 def lambda_handler(event, context):
-    with open("lodging/hotels.json", "r") as f:
+    with open("hotels.json", "r") as f:
         json_data = json.load(f)
 
     # Extract city and state from event
-    body = event["body"] # bG9jYXRpb25zPWNpdHkmbG9jYXRpb25zPXN0YXRlJmJ1ZGdldD05JnZhY2F0aW9uX3RpbWVzPXN0YXJ0X2RhdGUmdmFjYXRpb25fdGltZXM9ZW5kX2RhdGU=
+    body = event["body"]
     cities, states = extract_details(body)
-    returned_body = {}
+    logger.info("Body: {}".format(body))
+    logger.info("Destination cities: {}".format(cities))
+    logger.info("Destination states: {}".format(states))
 
     # Loop through each provided city
+    returned_body = {}
     for i in range(len(cities)):
         city = cities[i].lower().replace(',', '')
         state = states[i].lower()
@@ -31,11 +42,14 @@ def lambda_handler(event, context):
         cheapest = find_cheapest_lodging(hotel_dict)
         text = "Average cost for lodging in {}, {} is {} dollars, I recommend staying at {}, which costs {} dollars per night!".format(city, state, avg_cost, cheapest[0], cheapest[1])
 
-        returned_body = {
+        city_body = {
             "hotels": city_hotels,
             "average_cost": avg_cost,
             "text": text
         }
+
+        if city not in returned_body:
+            returned_body[city] = city_body
 
     return {
         "statusCode": 200,
@@ -45,6 +59,9 @@ def lambda_handler(event, context):
 def extract_details(body):
     """
     Takes body from JSON recieved from Alexa and parses attributes
+
+    @param body Body from Alexa-triggered Lambda
+    @return parsed destination cities/states for Data Store Request
     """
     # Decode event string
     base64_bytes = body.encode('ascii')
@@ -62,18 +79,27 @@ def extract_details(body):
     # free_times = parse_qs(params.query)['freetimes']
     return cities, states
 
-# finds the average cost of all hotels within hotel_dict (which represents hotels in a given city)
 def find_average_cost(hotel_dict):
+    """
+    Finds the average cost of all hotels within the area of
+    the requested destination city from the collected data set 
+
+    @param hotel_dict Mock Hotel Data collected from Data Store
+    """
     sum = 0
     count = 0
     for h in hotel_dict:
         sum += h["cost"]
         count += 1
-
     return sum/count
 
-# returns the cheapest lodging; the name of the hotel first, followed by cost per night
 def find_cheapest_lodging(hotel_dict):
+    """
+    Returns tuple of data for the cheapest lodging option in
+    the area.
+
+    @param hotel_dict Modck Hotel Data collected from Data Store
+    """
     lowest = hotel_dict[0]["cost"]
     place = hotel_dict[0]["name"]
     for h in hotel_dict:
