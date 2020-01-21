@@ -4,7 +4,7 @@ This Lambda Function performs a GET Request to the [Flight Engine](https://githu
 Lambda Function defined inside Alexa Skills Kit triggers this Lambda Function to retrieve flight data based on the User's interaction with Alexa.
 
 # Response
-Lambda Function response:
+Sample response:
 ```
 {
     "Chicago" : {
