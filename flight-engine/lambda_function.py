@@ -57,6 +57,7 @@ def lambda_handler(event, context):
 
         filtered_res = filter_by_destination(api_json, dest_city, dest_state)
         average_cost = math.floor(calculate_average_cost(filtered_res))
+        logger.info("Average flight cost: {}".format(average_cost))
 
         flight_data = {
             "average_cost": average_cost,
@@ -71,6 +72,8 @@ def lambda_handler(event, context):
             "text": "some response for Alexa"
         }
         returned_body[dest_city] = flight_data
+
+    logger.info("Response Data: {}".format(returned_body))
 
     return {
         "statusCode": 200,
@@ -98,6 +101,9 @@ def extract_destinations(body):
     cities = parse_qs(params.query)['cities']
     states = parse_qs(params.query)['states']
     # free_times = parse_qs(params.query)['freetimes']
+
+    logger.info("Cities: {}".format(cities))
+    logger.info("States: {}".format(states))
     return cities, states
 
 def extract_details(body):
