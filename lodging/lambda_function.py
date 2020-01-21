@@ -20,6 +20,13 @@ import base64
 logger = logging.getLogger()
 
 def lambda_handler(event, context):
+    """
+    Handler function executed upon Lambda Function triggering.
+
+    @param event Event data given from Lambda Event (JSON)
+    @param context LambdaContext object
+    @return HTTP Response after processing API Request
+    """
     with open("hotels.json", "r") as f:
         json_data = json.load(f)
 
