@@ -18,7 +18,7 @@ And was judged using the following criteria:
    - [`LinkedIn`](https://www.linkedin.com/in/baoadrian/)
 - Trey Bryant
    - [`Github`](https://github.com/tr3ylbry)
-   - LinkedIn
+   - [`LinkedIn`](https://www.linkedin.com/in/harry-bryant-a189a319b/)
 - Victora Metzler
    - [`Github`](https://github.com/victoriametzler)
    - [`LinkedIn`](https://www.linkedin.com/in/victoria-metzler/)
